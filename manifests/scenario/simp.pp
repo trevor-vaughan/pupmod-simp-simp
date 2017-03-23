@@ -65,4 +65,10 @@ class simp::scenario::simp {
   include 'sudosh'
   # Ensure that only services that are defined in Puppet are going to be enabled and run
   include 'svckill'
+
+  # EL6 only material
+  if ($facts['os']['name'] in ['RedHat', 'CentOS']) and (versioncmp($facts['os']['release']['major'], '6') == 0) {
+    include 'acpid'
+    include 'upstart'
+  }
 }

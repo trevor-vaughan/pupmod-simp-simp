@@ -1,3 +1,7 @@
+* Thu Mar 23 2017 Trevor Vaughan <tvaughan@onyxpoint.com> - 3.2.0-0
+- Fixed the confusion with the 'classes' global Array
+- Added support for a 'simp::classes' Array with a knockout prefix of '--'
+
 * Wed Mar 01 2017 Trevor Vaughan <tvaughan@onyxpoint.com> - 3.1.0-0
 - Added the new Grafana GPG key to the list and retained the old one until they
   re-sign their old packages.

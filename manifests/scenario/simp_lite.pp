@@ -72,4 +72,10 @@ class simp::scenario::simp_lite {
   # Set up the SSH server and client
   include 'ssh'
   include 'sudosh'
+
+  # EL6 only material
+  if ($facts['os']['name'] in ['RedHat', 'CentOS']) and (versioncmp($facts['os']['release']['major'], '6') == 0) {
+    include 'acpid'
+    include 'upstart'
+  }
 }
