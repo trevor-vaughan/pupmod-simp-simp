@@ -1,0 +1,7 @@
+---
+simp::scenario::data::rhel6:
+  - acpid
+  - upstart
+simp::scenario_map:
+  simp: "%{alias('simp::scenario::data::rhel6')}"
+  simp_lite: "%{alias('simp::scenario::data::rhel6')}"

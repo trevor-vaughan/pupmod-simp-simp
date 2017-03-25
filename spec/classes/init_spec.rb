@@ -1,3 +1,4 @@
+# vim: set expandtab ts=2 sw=2:
 require 'spec_helper'
 
 describe 'simp' do
@@ -75,16 +76,85 @@ describe 'simp' do
         end
 
         context 'scenario' do
-          scenarios = ['simp', 'simp_lite', 'poss']
+          poss = [
+            'pupmod',
+          ]
+          simp_lite = [
+            'simp::scenario::base',
+            'aide',
+            'auditd',
+            'clamav',
+            'chkrootkit',
+            'at',
+            'cron',
+            'incron',
+            'useradd',
+            'resolv',
+            'nsswitch',
+            'issue',
+            'tuned',
+            'swap',
+            'timezone',
+            'ntpd',
+            'simp_rsyslog',
+            'simp::admin',
+            'simp::base_apps',
+            'simp::base_services',
+            'simp::yum',
+            'simp::kmod_blacklist',
+            'simp::mountpoints',
+            'simp::sysctl',
+            'ssh',
+            'sudosh',
+          ]
+          simp = [
+            'pam::wheel',
+            'selinux',
+            'svckill',
+          ]
+          scenarios = {
+            'simp' => {
+              'contain' => [
+                simp,
+                simp_lite,
+                poss,
+              ],
+              'not_contain' => [
+              ]
+            },
+            'simp_lite' => {
+              'contain' => [
+                simp_lite,
+                poss,
+              ],
+              'not_contain' => [
+                simp
+              ]
+            },
+            'poss' => {
+              'contain' => [
+                poss,
+              ],
+              'not_contain' => [
+                simp_lite,
+                simp,
+              ]
+            }
+          }
 
-          scenarios.each do |scenario|
+          scenarios.each do |scenario, data|
             context scenario do
               let(:params) {{
                 :scenario => scenario
               }}
 
               it { is_expected.to compile.with_all_deps }
-              it { is_expected.to create_class("simp::scenario::#{scenario}") }
+              data['contain'].flatten.each do |class_name|
+                it { is_expected.to create_class("#{class_name}") }
+              end
+              data['not_contain'].flatten.each do |class_name|
+                it { is_expected.to_not create_class("#{class_name}") }
+              end
             end
           end
         end

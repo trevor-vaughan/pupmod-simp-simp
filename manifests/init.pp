@@ -112,9 +112,9 @@
 # @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class simp (
-  Enum['simp','simp_lite','poss'] $scenario                   = 'simp',
+  Enum['simp', 'simp_lite', 'poss', 'none'] $scenario                   = 'simp',
   Boolean                         $enable_data_includes       = true,
-  Optional[Array]                 $classes                    = lookup('simp::classes', Optional[Array], { 'strategy' => 'deep', 'knockout_prefix' => '--' }, undef),
+  Optional[Array]                 $classes                    = [],
   Variant[Boolean,Enum['remote']] $mail_server                = true,
   Variant[Boolean,Simplib::Host]  $rsync_stunnel              = simplib::lookup('simp_options::rsync', { 'default_value' => true }),
   Boolean                         $use_ssh_global_known_hosts = false,
@@ -135,7 +135,8 @@ class simp (
   Boolean                         $fips                       = simplib::lookup('simp_options::fips', { 'default_value' => false }),
   Boolean                         $ldap                       = simplib::lookup('simp_options::ldap', { 'default_value' => false }),
   Boolean                         $sssd                       = simplib::lookup('simp_options::sssd', { 'default_value' => true }),
-  Boolean                         $stock_sssd                 = true
+  Boolean                         $stock_sssd                 = true,
+  Hash                            $scenario_map
 ) {
 
   file { "${facts['puppet_vardir']}/simp":
@@ -156,11 +157,8 @@ class simp (
     }
   }
 
-  include "simp::scenario::${scenario}"
 
   if $version_info { include '::simp::version' }
-
-  if $classes {
-    include $classes
-  }
+  simp::classifier($scenario, $scenario_map, $classes)
 }
+# vim: set expandtab ts=2 sw=2:
