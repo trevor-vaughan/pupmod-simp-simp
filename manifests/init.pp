@@ -20,6 +20,14 @@
 #   * Any Array item in the lookup hierarchy that you prefix with ``--`` will
 #     be **removed** from the Array
 #
+#   @example The following list would include the `apache` class and exclude
+#     the `ntpd` class.
+#     ```
+#     ---
+#     simp::classes:
+#         - 'apache'
+#         - '--ntpd'
+#
 # @param mail_server
 #   Install a local mail service on the system
 #
@@ -112,6 +120,7 @@
 # @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class simp (
+  Hash                            $scenario_map,
   Enum['simp', 'simp_lite', 'poss', 'none'] $scenario         = 'simp',
   Boolean                         $enable_data_includes       = true,
   Optional[Array]                 $classes                    = [],
@@ -136,7 +145,6 @@ class simp (
   Boolean                         $ldap                       = simplib::lookup('simp_options::ldap', { 'default_value' => false }),
   Boolean                         $sssd                       = simplib::lookup('simp_options::sssd', { 'default_value' => true }),
   Boolean                         $stock_sssd                 = true,
-  Hash                            $scenario_map
 ) {
 
   file { "${facts['puppet_vardir']}/simp":
@@ -158,6 +166,7 @@ class simp (
   }
 
   if $version_info { include '::simp::version' }
-  simp::classifier($scenario, $scenario_map, $classes)
+
+  simp::include_scenario($scenario, $scenario_map, $classes)
 }
 # vim: set expandtab ts=2 sw=2:

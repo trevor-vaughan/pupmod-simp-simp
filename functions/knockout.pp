@@ -1,11 +1,13 @@
 function simp::knockout(Array $array) {
   $included = $array.filter |$data| {
-    $data !~ /^--.*/
+    $data !~ /^--/
   }
+
   $excluded = $array.filter |$data| {
-    $data =~ /^--.*/
+    $data =~ /^--/
   }.map |$data| {
-      delete($data, '--')
+    delete($data, '--')
   }
-  $included - $excluded
+
+  return $included - $excluded
 }

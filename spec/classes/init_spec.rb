@@ -84,7 +84,7 @@ describe 'simp' do
           end
         end
 
-        context 'scenario' do
+        context 'when scenario is set to' do
           poss = [
             'pupmod',
           ]
@@ -123,28 +123,28 @@ describe 'simp' do
           ]
           scenarios = {
             'simp' => {
-              'contain' => [
+              'contains' => [
                 simp,
                 simp_lite,
                 poss,
               ],
-              'not_contain' => [
+              'does_not_contain' => [
               ]
             },
             'simp_lite' => {
-              'contain' => [
+              'contains' => [
                 simp_lite,
                 poss,
               ],
-              'not_contain' => [
+              'does_not_contain' => [
                 simp
               ]
             },
             'poss' => {
-              'contain' => [
+              'contains' => [
                 poss,
               ],
-              'not_contain' => [
+              'does_not_contain' => [
                 simp_lite,
                 simp,
               ]
@@ -152,17 +152,17 @@ describe 'simp' do
           }
 
           scenarios.each do |scenario, data|
-            context scenario do
+            context "'#{scenario}'" do
               let(:params) {{
                 :scenario => scenario
               }}
 
               it { is_expected.to compile.with_all_deps }
-              data['contain'].flatten.each do |class_name|
-                it { is_expected.to create_class("#{class_name}") }
+              data['contains'].flatten.each do |class_name|
+                it { is_expected.to contain_class("#{class_name}") }
               end
-              data['not_contain'].flatten.each do |class_name|
-                it { is_expected.to_not create_class("#{class_name}") }
+              data['does_not_contain'].flatten.each do |class_name|
+                it { is_expected.to_not contain_class("#{class_name}") }
               end
             end
           end

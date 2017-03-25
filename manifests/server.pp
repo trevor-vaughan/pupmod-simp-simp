@@ -30,12 +30,13 @@ class simp::server (
   Boolean $clamav          = simplib::lookup('simp_options::clamav', { 'default_value' => false }),
   Boolean $selinux         = simplib::lookup('simp_options::selinux', { 'default_value' => false }),
   Boolean $auditd          = simplib::lookup('simp_options::auditd', { 'default_value' => false }),
-  String $scenario         = $simp::scenario,
-  Array $classes           = [],
-  Hash $scenario_map,
+  String  $scenario        = $simp::scenario,
+  Array[String] $classes   = [],
+  Hash    $scenario_map,
 ) inherits simp {
 
-  simp::classifier($scenario, $scenario_map, $classes)
+  simp::include_scenario($scenario, $scenario_map, $classes)
+
   if $clamav  { include '::clamav' }
   if $selinux { include '::selinux' }
   if $auditd  { include '::auditd' }

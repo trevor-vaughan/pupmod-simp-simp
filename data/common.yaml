@@ -1,11 +1,25 @@
+lookup_options:
+  simp::scenario_map:
+    merge:
+      strategy: deep
+      # XXX: `knockout_prefix` is broken in an interesting way: it only merges arrays on the same source. Disable it for now.
+      #knockout_prefix: --
+      sort_merge_arrays: true
+  simp::server::scenario_map:
+    merge:
+      strategy: deep
+      # XXX: `knockout_prefix` is broken in an interesting way: it only merges arrays on the same source. Disable it for now.
+      #knockout_prefix: --
+      sort_merge_arrays: true
+
 simp::scenario_map:
   none: []
   poss:
     - pupmod
   simp_lite:
-# Shared with poss
+    # Shared with `poss`
     - pupmod
-# Shared with simp
+    # Shared with `simp`
     - simp::scenario::base
     - aide
     - auditd
@@ -34,9 +48,9 @@ simp::scenario_map:
     - ssh
     - sudosh
   simp:
-# Shared with poss
+    # Shared with `poss`
     - pupmod
-# Shared with simp_lite
+    # Shared with `simp_lite`
     - simp::scenario::base
     - aide
     - auditd
@@ -64,7 +78,7 @@ simp::scenario_map:
     - simp::sysctl
     - ssh
     - sudosh
-# These classes are only in simp
+    # These classes are only in `simp`
     - pam::wheel
     - selinux
     - svckill
@@ -73,16 +87,3 @@ simp::server::scenario_map:
    poss: [ '::simp::server::rsync_shares' ]
    simp: [ '::simp::server::rsync_shares' ]
    simp_lite: [ '::simp::server::rsync_shares' ]
-lookup_options:
-  simp::scenario_map:
-    merge:
-      strategy: deep
-# This is broken in an interesting way, it only merges arrays on the same source. Disable it for now
-#      knockout_prefix: --
-      sort_merge_arrays: true
-  simp::server::scenario_map:
-    merge:
-      strategy: deep
-# This is broken in an interesting way, it only merges arrays on the same source. Disable it for now
-#      knockout_prefix: --
-      sort_merge_arrays: true
