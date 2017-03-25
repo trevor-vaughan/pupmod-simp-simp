@@ -28,6 +28,15 @@ describe 'simp' do
         it { is_expected.to create_stunnel__connection('rsync') }
         it { is_expected.to_not create_filebucket('simp') }
 
+        # For use with the next test
+        it { is_expected.to create_class('aide') }
+        context 'when removing classes using a knockout in simp::classes' do
+          let(:hieradata){ 'simp_classifier_knockout' }
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to_not create_class('aide') }
+        end
+
         context 'with filebucketing' do
           context 'with local path' do
             let(:params) {{ :enable_filebucketing => true }}

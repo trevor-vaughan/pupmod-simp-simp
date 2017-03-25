@@ -1,4 +1,4 @@
-function simp::knockout(Array $array) >> Array {
+function simp::knockout(Array $array) {
   $included = $array.filter |$data| {
     $data !~ /^--.*/
   }
@@ -8,5 +8,4 @@ function simp::knockout(Array $array) >> Array {
       delete($data, '--')
   }
   $included - $excluded
-
 }

@@ -112,7 +112,7 @@
 # @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class simp (
-  Enum['simp', 'simp_lite', 'poss', 'none'] $scenario                   = 'simp',
+  Enum['simp', 'simp_lite', 'poss', 'none'] $scenario         = 'simp',
   Boolean                         $enable_data_includes       = true,
   Optional[Array]                 $classes                    = [],
   Variant[Boolean,Enum['remote']] $mail_server                = true,
@@ -156,7 +156,6 @@ class simp (
       filebucket { $filebucket_name: path => $filebucket_path }
     }
   }
-
 
   if $version_info { include '::simp::version' }
   simp::classifier($scenario, $scenario_map, $classes)
