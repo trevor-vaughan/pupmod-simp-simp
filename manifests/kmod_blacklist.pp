@@ -75,7 +75,7 @@ class simp::kmod_blacklist (
   #
   # We're going to make the assumption that this isn't going to change but we
   # should obviously update our tests regularly
-  if ( $::operatingsystem in ['RedHat','CentOS'] ) and ( $::operatingsystemmajrelease == '6' ) {
+  if ( $::operatingsystem in ['RedHat','CentOS','OracleLinux'] ) and ( $::operatingsystemmajrelease == '6' ) {
     $_late_prefix = '00'
     $_early_prefix = 'zz'
   }

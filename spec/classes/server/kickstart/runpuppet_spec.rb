@@ -5,8 +5,8 @@ describe 'simp::server::kickstart::runpuppet' do
     on_supported_os.each do |os, facts|
       context "on #{os}" do
         let(:facts) do
-          facts[:servername] = 'my.happy.server'
-          facts[:server_facts] = { :servername => 'my.happy.server' }
+          facts[:servername] = facts[:fqdn]
+          facts[:server_facts] = server_facts_hash unless (Gem::Version.new(Puppet.version) >= Gem::Version.new('5.0.0'))
           facts
         end
 

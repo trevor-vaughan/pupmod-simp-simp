@@ -154,7 +154,7 @@ class simp::sysctl (
   validate_sysctl_value('kernel.core_pattern',$kernel__core_pattern)
 
   case $::operatingsystem {
-    'RedHat','CentOS': {
+    'RedHat','CentOS','OracleLinux': {
       # Performance Related Settings
       sysctl {
         'net.unix.max_dgram_qlen'           : value => $net__unix__max_dgram_qlen;
@@ -237,7 +237,7 @@ class simp::sysctl (
         }
       }
 
-      if ( $::operatingsystem in ['RedHat','CentOS'] ) and ( $::operatingsystemmajrelease == '6' ) {
+      if $::operatingsystemmajrelease == '6' {
         sysctl { 'kernel.exec-shield': value => $kernel__exec_shield }
       }
 
@@ -267,9 +267,6 @@ class simp::sysctl (
           'net.ipv6.conf.default.router_solicitations' : value => $net__ipv6__conf__default__router_solicitations;
         }
       }
-    }
-    default : {
-      fail('Only RedHat and CentOS are currently supported by "simp::sysctl"')
     }
   }
 }

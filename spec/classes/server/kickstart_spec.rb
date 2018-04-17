@@ -1,4 +1,3 @@
-# Can't run this until lwe get access to server_facts
 require 'spec_helper'
 
 describe 'simp::server::kickstart' do
@@ -8,14 +7,15 @@ describe 'simp::server::kickstart' do
         let(:facts) do
           facts[:puppet_settings] = {
             :agent => {
-              :server    => 'my.happy.server',
-              :ca_server => 'my.happy.server'
+              :server    => facts[:fqdn],
+              :ca_server => facts[:fqdn]
             }
           }
+
           # This is to replace the Puppet server provided $::servername variable.
           # In the future, this should move to using the $server_facts hash.
-          facts[:servername] = 'my.happy.server'
-          facts[:server_facts] = { :servername => 'my.happy.server' }
+          facts[:servername] = facts[:fqdn]
+          facts[:server_facts] = server_facts_hash unless (Gem::Version.new(Puppet.version) >= Gem::Version.new('5.0.0'))
           facts
         end
 

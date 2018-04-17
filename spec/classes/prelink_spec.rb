@@ -6,7 +6,7 @@ describe 'simp::prelink' do
       context 'with default parameters' do
         context 'when prelink is not installed' do
           let(:facts) do
-            os_facts
+            os_facts.merge({ :prelink => nil })
           end
 
           it { is_expected.to compile.with_all_deps }
@@ -23,8 +23,8 @@ describe 'simp::prelink' do
           it { is_expected.to create_class('simp::prelink') }
           it {
             is_expected.to contain_exec('remove prelinking').with( {
-              :command     => '/etc/cron.daily/prelink',
-              :before      =>'Package[prelink]'
+              :command => '/etc/cron.daily/prelink',
+              :before  =>'Package[prelink]'
             } )
           }
 

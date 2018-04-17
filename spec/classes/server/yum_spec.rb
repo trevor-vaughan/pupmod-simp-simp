@@ -6,7 +6,7 @@ describe 'simp::server::yum' do
     on_supported_os.each do |os, facts|
       context "on #{os}" do
         let(:facts) do
-          if ['RedHat','CentOS'].include?(facts[:operatingsystem]) && facts[:operatingsystemmajrelease].to_s < '7'
+          if ['RedHat','CentOS','OracleLinux'].include?(facts[:operatingsystem]) && facts[:operatingsystemmajrelease].to_s < '7'
             facts[:apache_version] = '2.2'
             facts[:grub_version] = '0.9'
             facts[:init_systems] = ['rc','sysv','upstart']

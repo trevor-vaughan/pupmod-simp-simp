@@ -70,7 +70,7 @@ class simp::base_apps (
   }
 
   case $facts['os']['name'] {
-    'RedHat','CentOS': {
+    'RedHat','CentOS','OracleLinux': {
       if $facts['os']['release']['major'] > '6' {
         # For now, these will be commented out and ignored by svckill
         # Puppet cannot enable these services because there is no

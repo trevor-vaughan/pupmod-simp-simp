@@ -144,7 +144,6 @@ pup5_3-validation:
   <<: *cache_bundler
   <<: *setup_bundler_env
   <<: *validation_checks
-  allow_failure: true
 
 pup5_3-unit:
   stage: unit
@@ -156,7 +155,6 @@ pup5_3-unit:
   <<: *cache_bundler
   <<: *setup_bundler_env
   <<: *spec_tests
-  allow_failure: true
 
 
 # Keep an eye on the latest puppet 5
@@ -171,7 +169,6 @@ pup5_latest-validation:
   <<: *cache_bundler
   <<: *setup_bundler_env
   <<: *validation_checks
-  allow_failure: true
 
 pup5_latest-unit:
   stage: unit
@@ -183,24 +180,12 @@ pup5_latest-unit:
   <<: *cache_bundler
   <<: *setup_bundler_env
   <<: *spec_tests
-  allow_failure: true
 
 
 
 # Acceptance tests
 # ==============================================================================
-base_apps:
-  stage: acceptance
-  tags:
-    - beaker
-  <<: *cache_bundler
-  <<: *setup_bundler_env
-  variables:
-    PUPPET_VERSION: '4.10'
-  script:
-    - bundle exec rake beaker:suites[base_apps]
-
-default:
+default-acceptance:
   stage: acceptance
   tags:
     - beaker
@@ -211,7 +196,7 @@ default:
   script:
     - bundle exec rake beaker:suites[default]
 
-default-puppet5:
+fips-acceptance:
   stage: acceptance
   tags:
     - beaker
@@ -219,51 +204,37 @@ default-puppet5:
   <<: *setup_bundler_env
   variables:
     PUPPET_VERSION: '4.10'
+    BEAKER_fips: 'yes'
+  script:
+    - bundle exec rake beaker:suites[default]
+
+acceptance-puppet5-default:
+  stage: acceptance
+  tags:
+    - beaker
+  <<: *cache_bundler
+  <<: *setup_env_beaker
   script:
     - bundle exec rake beaker:suites[default,puppet5]
-  allow_failure: true
 
-no_simp_server:
+acceptance-fips-puppet5-default:
   stage: acceptance
   tags:
     - beaker
   <<: *cache_bundler
-  <<: *setup_bundler_env
+  <<: *setup_env_beaker
   variables:
-    PUPPET_VERSION: '4.10'
+    BEAKER_fips: 'yes'
   script:
-    - bundle exec rake beaker:suites[no_simp_server]
+    - bundle exec rake beaker:suites[default,puppet5]
 
-one_shot_scenario:
+acceptance-oel-puppet5-default:
   stage: acceptance
   tags:
     - beaker
   <<: *cache_bundler
-  <<: *setup_bundler_env
+  <<: *setup_env_beaker
   variables:
-    PUPPET_VERSION: '4.10'
+    PUPPET_VERSION: '5.4'
   script:
-    - bundle exec rake beaker:suites[scenario_one_shot]
-
-poss_scenario:
-  stage: acceptance
-  tags:
-    - beaker
-  <<: *cache_bundler
-  <<: *setup_bundler_env
-  variables:
-    PUPPET_VERSION: '4.10'
-  script:
-    - bundle exec rake beaker:suites[scenario_poss]
-
-remote_access_scenario:
-  stage: acceptance
-  tags:
-    - beaker
-  <<: *cache_bundler
-  <<: *setup_bundler_env
-  variables:
-    PUPPET_VERSION: '4.10'
-  script:
-    - bundle exec rake beaker:suites[scenario_remote_access]
-  allow_failure: true
+    - bundle exec rake beaker:suites[default,oel_p5]
