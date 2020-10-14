@@ -51,7 +51,7 @@ plan simp::server::install_and_bootstrap(
         selinux::login_resources:
           ${server_user}:
             seuser: staff_u
-            mls_range: "s0-s0:c0.c123"
+            mls_range: "s0-s0:c0.c1023"
         | DEFAULT_HIERADATA
 
       file { '/usr/share/simp/environment-skeleton/puppet/data/default.yaml':
