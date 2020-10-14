@@ -90,6 +90,6 @@ plan simp::server::install_and_bootstrap(
 
     run_command(join($copy_ssh_auth_key_cmd, ' && '), $simp_server)
 
-    run_command('simp bootstrap', $simp_server)
+    run_command('simp bootstrap --no-remove_ssldir --no-track --no-verbose', $simp_server)
   }
 }
