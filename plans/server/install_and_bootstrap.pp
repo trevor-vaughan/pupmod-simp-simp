@@ -1,4 +1,4 @@
-# bolt plan run simp::install --no-host-key-check --tty --user vagrant --password vagrant --run-as root simp_server=ssh://127.0.0.1:2202
+# bolt plan run simp::server::install_and_bootstrap --no-host-key-check --tty --user vagrant --password vagrant --run-as root simp_server=ssh://127.0.0.1:2202
 plan simp::server::install_and_bootstrap(
   TargetSpec                          $simp_server,
   Optional[TargetSpec]                $clients              = undef,

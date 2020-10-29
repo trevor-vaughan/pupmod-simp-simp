@@ -1,0 +1,37 @@
+---
+sudo::user_specifications:
+  vagrant_su:
+    user_list:
+      - vagrant
+    cmnd:
+      - ALL
+    passwd: false
+    options:
+      role: unconfined_r
+
+pam::access::users:
+  vagrant:
+    origins:
+      - ALL
+
+selinux::login_resources:
+  vagrant:
+    seuser: staff_u
+    mls_range: 's0-s0:c0.c1023'
+
+simp_options::auditd: true
+simp_options::clamav: true
+simp_options::firewall: true
+simp_options::logrotate: true
+simp_options::pam: true
+simp_options::pki: false
+simp_options::sssd: false
+simp_options::syslog: true
+simp_options::tcpwrappers: true
+
+simp::classes:
+  - '--resolv'
+
+ssh::server::conf::authorizedkeysfile: '.ssh/authorized_keys'
+
+compliance_markup::enforcement: disa_stig
