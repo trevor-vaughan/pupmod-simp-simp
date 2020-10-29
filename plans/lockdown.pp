@@ -22,7 +22,16 @@ plan simp::lockdown (
     # Need to make a temp directory that's somewhere with exec permissions
     $tmp_dir = "/var/run/bolt/${server_user}"
 
-    run_command("/opt/puppetlabs/bin/puppet resource file '${tmp_dir}' mode=700 seltype=tmp_t seluser=staff_u owner=${server_user} group=${server_user}", $target)
+    run_command(
+      [
+        '/opt/puppetlabs/bin/puppet resource file',
+        "'${tmp_dir}'",
+        'mode=700 seltype=tmp_t seluser=staff_u',
+        "owner=${server_user}",
+        "group=${server_user}"
+      ].join(' ')
+      , $target
+    )
 
     $target.set_config(['ssh','tmpdir'], $tmp_dir)
 
