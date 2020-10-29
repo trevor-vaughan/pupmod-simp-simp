@@ -22,11 +22,7 @@ plan simp::lockdown (
     # Need to make a temp directory that's somewhere with exec permissions
     $tmp_dir = "/var/run/bolt/${server_user}"
 
-    run_command("mkdir -p '${tmp_dir}'", $target)
-    run_command("chmod go+rx-w `dirname '${tmp_dir}'`", $target)
-    run_command("chmod go-rwx '${tmp_dir}'", $target)
-    run_command("chcon -t tmp_t '${tmp_dir}'", $target)
-    run_command("chown ${server_user} '${tmp_dir}'", $target)
+    run_command("/opt/puppetlabs/bin/puppet resource file '${tmp_dir}' mode=700 seltype=tmp_t seluser=staff_u owner=${server_user} group=${server_user}", $target)
 
     $target.set_config(['ssh','tmpdir'], $tmp_dir)
 
